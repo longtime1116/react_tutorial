@@ -62,6 +62,22 @@ export default class Game extends React.Component {
     })
   }
 
+  // こんな感じで excersice2 を解いても良い
+  //  calcFontWeight(step){
+  //    if (this.state.history[this.state.stepNumber] !== step) {
+  //      return 'bold'
+  //    } else {
+  //      return ''
+  //    }
+  //  }
+  //
+  // で、以下の render の中で
+  // const divStyle = { fontWeight: this.calcFontWeight(step) }
+
+  isCurrentSquares(step) {
+    return this.state.history[this.state.stepNumber] === step
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -71,19 +87,12 @@ export default class Game extends React.Component {
       const desc = move?
         'Move #' + move + '(' + step.row + ', ' + step.column + ')':
         'Game start';
-      if (this.state.history[this.state.stepNumber] === step ){
+      const divStyle = this.isCurrentSquares(step) ? { fontWeight: 'bold' } : {}
         return (
           <li key={move}>
-            <a href="#" onClick={() => this.jumpTo(move)}><b>{desc}</b></a>
+            <a href="#" onClick={() => this.jumpTo(move)} style={divStyle}>{desc}</a>
           </li>
         );
-      } else {
-        return (
-          <li key={move}>
-            <a href="#" onClick={() => this.jumpTo(move)}>{desc}</a>
-          </li>
-        );
-      }
     })
 
     let status;
