@@ -71,11 +71,19 @@ export default class Game extends React.Component {
       const desc = move?
         'Move #' + move + '(' + step.row + ', ' + step.column + ')':
         'Game start';
-      return (
-        <li key={move}>
-          <a href="#" onClick={() => this.jumpTo(move)}>{desc}</a>
-        </li>
-      );
+      if (this.state.history[this.state.stepNumber] === step ){
+        return (
+          <li key={move}>
+            <a href="#" onClick={() => this.jumpTo(move)}><b>{desc}</b></a>
+          </li>
+        );
+      } else {
+        return (
+          <li key={move}>
+            <a href="#" onClick={() => this.jumpTo(move)}>{desc}</a>
+          </li>
+        );
+      }
     })
 
     let status;
