@@ -86,12 +86,16 @@ export default class Game extends React.Component {
     return this.state.history[this.state.stepNumber] === step
   }
 
+  orderdHistory(history, reverseMove) {
+    return (this.state.reverseMove) ? history.slice().reverse() : history
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
-    let moves = history.map((step, move) => {
+    const moves = this.orderdHistory(history, this.state.reverseMove).map((step, move) => {
       const desc = move?
         'Move #' + move + '(' + step.row + ', ' + step.column + ')':
         'Game start';
@@ -102,10 +106,6 @@ export default class Game extends React.Component {
           </li>
         );
     })
-
-    if (this.state.reverseMove) {
-      moves.reverse()
-    }
 
     let status;
     if (winner) {
