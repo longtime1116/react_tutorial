@@ -1,5 +1,6 @@
 import React from 'react';
 import Board from './Board';
+import SortButton from './SortButton';
 import './Game.css';
 
 function calculateWinner(squares) {
@@ -33,6 +34,7 @@ export default class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
+      reverseMove: false
     }
   }
 
@@ -53,6 +55,12 @@ export default class Game extends React.Component {
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     });
+  }
+
+  handleSortButtonClick() {
+    this.setState({
+      reverseMove: !this.state.reverseMove
+    })
   }
 
   jumpTo(step) {
@@ -83,7 +91,7 @@ export default class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
-    const moves = history.map((step, move) => {
+    let moves = history.map((step, move) => {
       const desc = move?
         'Move #' + move + '(' + step.row + ', ' + step.column + ')':
         'Game start';
@@ -94,6 +102,10 @@ export default class Game extends React.Component {
           </li>
         );
     })
+
+    if (this.state.reverseMove) {
+      moves.reverse()
+    }
 
     let status;
     if (winner) {
@@ -112,6 +124,9 @@ export default class Game extends React.Component {
         <div className="game-info">
           <div>{status}</div>
           <ol>{moves}</ol>
+          <SortButton
+            onClick={() => this.handleSortButtonClick()}
+          />
         </div>
       </div>
     );
