@@ -2,11 +2,12 @@ import React from 'react';
 import Square from './Square';
 
 export default class Board extends React.Component {
-  renderSquare(i) {
+  renderSquare(i, need_highlight) {
     return (
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        need_highlight={need_highlight}
         key={i}
       />
     );
@@ -22,7 +23,6 @@ export default class Board extends React.Component {
     //      }
     //      squares2.push(<div className="board-row">{squares1}</div>)
     //    }
-
     return (
       <div>
         {
@@ -31,7 +31,9 @@ export default class Board extends React.Component {
               <div className="board-row" key={row}>
                 {
                   [0, 1, 2].map((column) => {
-                    return this.renderSquare(row * 3 + column)
+                    const index = row * 3 + column;
+                    const need_highlight = this.props.winnerLine.includes(index);
+                    return this.renderSquare(index, need_highlight);
                   })
                 }
               </div>
