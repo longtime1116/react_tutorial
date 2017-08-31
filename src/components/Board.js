@@ -25,21 +25,17 @@ export default class Board extends React.Component {
     //    }
     return (
       <div>
-        {
-          [0, 1, 2].map((row) => {
-            return (
-              <div className="board-row" key={row}>
-                {
-                  [0, 1, 2].map((column) => {
-                    const index = row * 3 + column;
-                    const need_highlight = this.props.winnerLine.includes(index);
-                    return this.renderSquare(index, need_highlight);
-                  })
-                }
-              </div>
-            )
-          })
-        }
+        {[0, 1, 2].map(row => {
+          return (
+            <div className="board-row" key={row}>
+              {[0, 1, 2].map(column => {
+                const index = row * 3 + column;
+                const need_highlight = this.props.winnerLine.includes(index);
+                return this.renderSquare(index, need_highlight);
+              })}
+            </div>
+          );
+        })}
 
         {/* 上のやつを省略して簡略化したやつ return と {} を省略している
         {

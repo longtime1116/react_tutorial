@@ -27,15 +27,17 @@ export default class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      history: [{
-        squares: Array(9).fill(null),
-        row: 0,
-        column: 0,
-      }],
+      history: [
+        {
+          squares: Array(9).fill(null),
+          row: 0,
+          column: 0,
+        },
+      ],
       stepNumber: 0,
       xIsNext: true,
-      reverseMove: false
-    }
+      reverseMove: false,
+    };
   }
 
   handleClick(i) {
@@ -47,11 +49,13 @@ export default class Game extends React.Component {
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
-      history: history.concat([{
-        squares: squares,
-        row: Math.floor(i / 3),
-        column: i % 3,
-      }]),
+      history: history.concat([
+        {
+          squares: squares,
+          row: Math.floor(i / 3),
+          column: i % 3,
+        },
+      ]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     });
@@ -59,15 +63,15 @@ export default class Game extends React.Component {
 
   handleSortButtonClick() {
     this.setState({
-      reverseMove: !this.state.reverseMove
-    })
+      reverseMove: !this.state.reverseMove,
+    });
   }
 
   jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: (step % 2) === 0,
-    })
+      xIsNext: step % 2 === 0,
+    });
   }
 
   // こんな感じで excersice2 を解いても良い
@@ -83,7 +87,7 @@ export default class Game extends React.Component {
   // const divStyle = { fontWeight: this.calcFontWeight(step) }
 
   isCurrentSquares(step) {
-    return this.state.history[this.state.stepNumber] === step
+    return this.state.history[this.state.stepNumber] === step;
   }
 
   render() {
@@ -93,19 +97,23 @@ export default class Game extends React.Component {
     [winner, winnerLine] = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
-      const desc = move?
-        'Move #' + move + '(' + step.row + ', ' + step.column + ')':
-        'Game start';
-      const divStyle = this.isCurrentSquares(step) ? { fontWeight: 'bold' } : {}
-        return (
-          <li key={move}>
-            <a href="#" onClick={() => this.jumpTo(move)} style={divStyle}>{desc}</a>
-          </li>
-        );
-    })
+      const desc = move
+        ? 'Move #' + move + '(' + step.row + ', ' + step.column + ')'
+        : 'Game start';
+      const divStyle = this.isCurrentSquares(step)
+        ? { fontWeight: 'bold' }
+        : {};
+      return (
+        <li key={move}>
+          <a href="#" onClick={() => this.jumpTo(move)} style={divStyle}>
+            {desc}
+          </a>
+        </li>
+      );
+    });
 
     if (this.state.reverseMove) {
-      moves.reverse()
+      moves.reverse();
     }
 
     let status;
@@ -120,15 +128,13 @@ export default class Game extends React.Component {
           <Board
             squares={current.squares}
             winnerLine={winnerLine}
-            onClick={(i) => this.handleClick(i)}
+            onClick={i => this.handleClick(i)}
           />
         </div>
         <div className="game-info">
           <div>{status}</div>
           <ol>{moves}</ol>
-          <SortButton
-            onClick={() => this.handleSortButtonClick()}
-          />
+          <SortButton onClick={() => this.handleSortButtonClick()} />
         </div>
       </div>
     );
